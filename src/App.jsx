@@ -77,7 +77,7 @@ function App() {
         setResults(data);
 
         // find url for audio
-        
+
       }
     } catch (error) {
       console.error(error)
@@ -161,12 +161,15 @@ function App() {
               <div style={{ fontWeight: 'lighter' }}>Meaning</div>
               <ul>
                 {meaning.definitions.map(definition => (
-                  <li key={definition}>{definition.definition}</li>
+                  <>
+                    <li key={definition}>{definition.definition}</li>
+                    <div>{definition.example}</div>
+                  </>
                 ))}
               </ul>
               {meaning.synonyms?.length > 0 ? (
                 <div>
-                  <div>Synonyms:</div> 
+                  <span>Synonyms: </span> 
                   {meaning.synonyms.map((synonym, index) => (<span key={index} style={{ color: 'purple', fontWeight: 'bold' }}>{synonym}</span>))}
                 </div>
               ) : null}
