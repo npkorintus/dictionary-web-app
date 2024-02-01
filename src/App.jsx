@@ -155,12 +155,12 @@ function App() {
         <div key={`${result.word}-${index}`}>
           <Flex>
             <Box>
-              <div style={{ fontWeight: 'bold' }}>{result.word}</div>
+              <h1 style={{ fontWeight: 'bold' }}>{result.word}</h1>
               <div style={{ color: 'purple' }}>{result.phonetic}</div>
             </Box>
             <Spacer />
             <Box>
-              {audio && <button onClick={() => audio.play()}><Icon as={FaPlayCircle} boxSize={12} /></button>}
+              {audio && <button onClick={() => audio.play()}><Icon style={{ color: 'purple' }} as={FaPlayCircle} boxSize={12} /></button>}
             </Box>
           </Flex>
 
@@ -168,12 +168,15 @@ function App() {
             const partOfSpeech = meaning.partOfSpeech;
 
             return (
-            <div key={partOfSpeech} style={{ padding: '16px', margin: '16px' }}>
-              <div style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
-                {meaning.partOfSpeech}
-              </div>
+            <div key={partOfSpeech} style={{ padding: '16px 0', margin: '16px 0' }}>
+              <Flex align='center' style={{ marginBottom: '16px' }}>
+                <div style={{ fontStyle: 'italic', fontWeight: 'bold', marginRight: '16px' }}>
+                  {meaning.partOfSpeech}
+                </div>
+                <hr style={{ width: '100%' }} />
+              </Flex>
               <div style={{ fontWeight: 'lighter', color: 'gray' }}>Meaning</div>
-              <ul key={`${partOfSpeech}-${index}-list`} style={{ margin: '8px 24px'}}>
+              <ul key={`${partOfSpeech}-${index}-list`} style={{ margin: '8px 24px 32px' }}>
                 {meaning.definitions.map((definition, index) => (
                   <React.Fragment key={`${partOfSpeech}-${index}-item`}>
                     <li key={`${partOfSpeech}-${index}-item`} style={{ margin: '8px 0' }}>{definition.definition}</li>
@@ -188,10 +191,11 @@ function App() {
                   <span style={{ color: 'purple', fontWeight: 'bold' }}>{meaning.synonyms.join(', ')}</span>
                 </div>
               ) : null}
-              {result.meanings.length > 1 ? <hr/> : null}
+              {/* {result.meanings.length > 1 ? <hr/> : null} */}
             </div>)
           })}
-          <div style={{ fontSize: '12px' }}>
+          <hr />
+          <div style={{ fontSize: '12px', paddingTop: '16px' }}>
             <span style={{ color: 'gray' }}>Source </span>
             <a href={result.sourceUrls}>
               <span style={{ textDecoration: 'underline' }}>{result.sourceUrls}</span>
