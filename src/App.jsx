@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 // import viteLogo from '/vite.svg'
 import './App.css'
 
-import { Icon, IconButton, Flex, Box, Spacer } from '@chakra-ui/react'
-import { Input, InputGroup, InputRightElement, Select, Switch } from '@chakra-ui/react'
+import { Icon, IconButton, Flex, Box, Spacer, useDisclosure } from '@chakra-ui/react'
+import { Button, Input, InputGroup, InputRightElement, Select, Switch } from '@chakra-ui/react'
 // import { Switch } from '@chakra-ui/react'
 
 import {
@@ -12,6 +12,16 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
+} from '@chakra-ui/react'
+
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from '@chakra-ui/react'
 
 import { useColorMode } from '@chakra-ui/react'
@@ -33,10 +43,14 @@ function App() {
   const [searchValue, setSearchValue] = useState('');
   const [data, setData] = useState([]);
   const [results, setResults] = useState([]);
+  const [error, setError] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   console.log('colorMode: ', colorMode)
   console.log('mockData: ', mockData)
   const [selectedFont, setSelectedFont] = useState(font ? font : 'serif');
   const [audio, setAudio] = useState(new Audio(''));
+
+  // const { isOpen, onOpen, onClose } = useDisclosure()
 
   // const font = localStorage.getItem('font');
   console.log('audio: ', audio)
@@ -72,11 +86,12 @@ function App() {
   async function lookup () {
     try {
       const response = await fetch(`${baseUrl}/${searchValue}`);
-      // console.log('response: ', response)
+      console.log('response: ', response)
       if (response.ok) {
         const data = await response.json();
         setData(data);
         setResults(data);
+        setError();
 
         // find url for audio
         data.forEach(result => {
@@ -84,8 +99,15 @@ function App() {
           setAudio(new Audio(sample.audio))
         })
 
+      } else if (response.ok === false) {
+        const err = await response.json();
+        setIsOpen(true);
+        setError(err);
+        // setResults([]);
+        console.log('error! ', err)
       }
     } catch (error) {
+      // setError(error)
       console.error(error)
     }
   }
@@ -152,7 +174,7 @@ function App() {
       </div>
 
       {results.length > 0 && results.map((result, index) => (
-        <div key={`${result.word}-${index}`}>
+        <div className='result-word' key={`${result.word}-${index}`} style={{ marginBottom: '48px' }}>
           <Flex>
             <Box>
               <h1 style={{ fontWeight: 'bold' }}>{result.word}</h1>
@@ -206,6 +228,33 @@ function App() {
         </div>
       ))}
       {results.length > 1 ? <hr /> : null}
+
+      {/* {error ? (
+        <>
+          <div>{error.title}</div>
+          <div>{error.message}</div>
+          <div>{error.resolution}</div>
+        </>
+      ) : null} */}
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{error?.title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <div>{error?.message}</div>
+            <br />
+            <div>{error?.resolution}</div>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='purple' mr={3} onClick={() => setIsOpen(false)}>
+              Close
+            </Button>
+            {/* <Button variant='ghost'>Secondary Action</Button> */}
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
     </div>
   )
