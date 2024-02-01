@@ -29,7 +29,7 @@ console.log('font: ', font)
 
 function App() {
   const { colorMode, toggleColorMode } = useColorMode();
-  
+
   const [searchValue, setSearchValue] = useState('');
   const [data, setData] = useState([]);
   const [results, setResults] = useState([]);
@@ -39,6 +39,7 @@ function App() {
   const [audio, setAudio] = useState(new Audio(''));
 
   // const font = localStorage.getItem('font');
+  console.log('audio: ', audio)
 
 
   const handleSelect = (e) => {
@@ -54,7 +55,8 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('search for word: ', searchValue)
+    // console.log('search for word: ', searchValue)
+    // setSearchValue(e.target.value)
 
     // fetch(`${baseUrl}/${searchValue}`)
     //   .then(response => {
@@ -70,19 +72,27 @@ function App() {
   async function lookup () {
     try {
       const response = await fetch(`${baseUrl}/${searchValue}`);
-      console.log('response: ', response)
+      // console.log('response: ', response)
       if (response.ok) {
         const data = await response.json();
         setData(data);
         setResults(data);
 
         // find url for audio
+        data.forEach(result => {
+          const sample = result.phonetics.find(({ audio }) => audio !== "");
+          setAudio(new Audio(sample.audio))
+        })
 
       }
     } catch (error) {
       console.error(error)
     }
   }
+
+  useEffect(() => {
+    lookup();
+  }, []);
 
   // useEffect(() => {
   //   fetch(`${baseUrl}/${searchValue}`)
@@ -113,7 +123,7 @@ function App() {
               <Spacer />
               <Box p={2}>
                 <Switch onChange={toggleColorMode} isChecked={colorMode === 'dark' ? true : false} />
-              </Box>  
+              </Box>
                 <Spacer />
               <Box>
                 <MoonIcon />
@@ -122,15 +132,16 @@ function App() {
           </Box>
         </Flex>
       </div>
-      
+
       <div className='form-container' style={{ margin: '20px 0' }}>
         <form onSubmit={handleSubmit}>
           <FormControl>
             <InputGroup>
-              <Input 
-                placeholder='Search dictionary...' 
+              <Input
+                placeholder='Search dictionary...'
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
+                required
                 />
               <InputRightElement>
                 <IconButton type="submit" aria-label='search' icon={<SearchIcon />} />
@@ -140,8 +151,8 @@ function App() {
         </form>
       </div>
 
-      {results.length > 0 && results.map(result => (
-        <div key={result.word}>
+      {results.length > 0 && results.map((result, index) => (
+        <div key={`${result.word}-${index}`}>
           <Flex>
             <Box>
               <div style={{ fontWeight: 'bold' }}>{result.word}</div>
@@ -149,37 +160,41 @@ function App() {
             </Box>
             <Spacer />
             <Box>
-              <button><Icon as={FaPlayCircle} boxSize={12} /></button>
+              {audio && <button onClick={() => audio.play()}><Icon as={FaPlayCircle} boxSize={12} /></button>}
             </Box>
           </Flex>
-          
-          {result.meanings.map(meaning => (
-            <div key={meaning.partOfSpeech} style={{ padding: '16px', margin: '16px' }}>
+
+          {result.meanings.map((meaning, index) => {
+            const partOfSpeech = meaning.partOfSpeech;
+
+            return (
+            <div key={partOfSpeech} style={{ padding: '16px', margin: '16px' }}>
               <div style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
                 {meaning.partOfSpeech}
               </div>
-              <div style={{ fontWeight: 'lighter' }}>Meaning</div>
-              <ul>
-                {meaning.definitions.map(definition => (
-                  <>
-                    <li key={definition}>{definition.definition}</li>
-                    <div>{definition.example}</div>
-                  </>
+              <div style={{ fontWeight: 'lighter', color: 'gray' }}>Meaning</div>
+              <ul key={`${partOfSpeech}-${index}-list`} style={{ margin: '8px 24px'}}>
+                {meaning.definitions.map((definition, index) => (
+                  <React.Fragment key={`${partOfSpeech}-${index}-item`}>
+                    <li key={`${partOfSpeech}-${index}-item`} style={{ margin: '8px 0' }}>{definition.definition}</li>
+                    {definition.example && <div style={{ color: 'gray' }}>"{definition.example}"</div>}
+                  </React.Fragment>
                 ))}
               </ul>
               {meaning.synonyms?.length > 0 ? (
                 <div>
-                  <span>Synonyms: </span> 
-                  {meaning.synonyms.map((synonym, index) => (<span key={index} style={{ color: 'purple', fontWeight: 'bold' }}>{synonym}</span>))}
+                  <span>Synonyms: </span>
+                  {/* {meaning.synonyms.map((synonym, index) => (<span key={index} style={{ color: 'purple', fontWeight: 'bold' }}>{synonym}</span>))} */}
+                  <span style={{ color: 'purple', fontWeight: 'bold' }}>{meaning.synonyms.join(', ')}</span>
                 </div>
               ) : null}
               {result.meanings.length > 1 ? <hr/> : null}
-            </div>
-          ))}
-          <div>
-            <span>Source </span>
+            </div>)
+          })}
+          <div style={{ fontSize: '12px' }}>
+            <span style={{ color: 'gray' }}>Source </span>
             <a href={result.sourceUrls}>
-              <span style={{ textDecoration: 'underline' }}>{result.sourceUrls}</span> 
+              <span style={{ textDecoration: 'underline' }}>{result.sourceUrls}</span>
               &nbsp;
               <ExternalLinkIcon />
             </a>
@@ -187,7 +202,7 @@ function App() {
         </div>
       ))}
       {results.length > 1 ? <hr /> : null}
-      
+
     </div>
   )
 }
