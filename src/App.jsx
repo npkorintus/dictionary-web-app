@@ -165,11 +165,9 @@ function App() {
               {meaning.synonyms?.length > 0 ? (
                 <div>
                   <span>Synonyms: </span>
-                  {/* {meaning.synonyms.map((synonym, index) => (<span key={index} style={{ color: 'purple', fontWeight: 'bold' }}>{synonym}</span>))} */}
                   <span style={{ color: 'purple', fontWeight: 'bold' }}>{meaning.synonyms.join(', ')}</span>
                 </div>
               ) : null}
-              {/* {result.meanings.length > 1 ? <hr/> : null} */}
             </div>)
           })}
           <hr />
@@ -185,13 +183,6 @@ function App() {
       ))}
       {results.length > 1 ? <hr /> : null}
 
-      {/* {error ? (
-        <>
-          <div>{error.title}</div>
-          <div>{error.message}</div>
-          <div>{error.resolution}</div>
-        </>
-      ) : null} */}
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay />
         <ModalContent>
@@ -207,7 +198,6 @@ function App() {
             <Button colorScheme='purple' mr={3} onClick={() => setIsOpen(false)}>
               Close
             </Button>
-            {/* <Button variant='ghost'>Secondary Action</Button> */}
           </ModalFooter>
         </ModalContent>
       </Modal>
