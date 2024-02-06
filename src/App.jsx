@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
 
-import { Icon, IconButton, Flex, Box, Spacer, useDisclosure } from '@chakra-ui/react'
-import { Button, Input, InputGroup, InputRightElement, Select, Switch } from '@chakra-ui/react'
-// import { Switch } from '@chakra-ui/react'
+import './App.css';
 
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-} from '@chakra-ui/react'
-
+import { Box, Flex, Icon, IconButton, Spacer } from '@chakra-ui/react';
+import { Button, FormControl, Input, InputGroup, InputRightElement, Select, Switch } from '@chakra-ui/react';
 import {
   Modal,
   ModalOverlay,
@@ -22,20 +12,16 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
-import { useColorMode } from '@chakra-ui/react'
+import { useColorMode } from '@chakra-ui/react';
 
-import { MoonIcon, SearchIcon, ExternalLinkIcon } from '@chakra-ui/icons'
+import { MoonIcon, SearchIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { RiBook2Line } from "react-icons/ri";
 import { FaPlayCircle } from "react-icons/fa";
 
-import { mockData } from './mockData'
-
 const baseUrl = `https://api.dictionaryapi.dev/api/v2/entries/en`;
 const font = localStorage.getItem('font');
-
-console.log('font: ', font)
 
 function App() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -45,41 +31,18 @@ function App() {
   const [results, setResults] = useState([]);
   const [error, setError] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  console.log('colorMode: ', colorMode)
-  console.log('mockData: ', mockData)
+
   const [selectedFont, setSelectedFont] = useState(font ? font : 'serif');
   const [audio, setAudio] = useState(new Audio(''));
 
-  // const { isOpen, onOpen, onClose } = useDisclosure()
-
-  // const font = localStorage.getItem('font');
-  console.log('audio: ', audio)
-
-
   const handleSelect = (e) => {
     e.preventDefault();
-    console.log('e.target.val: ', e.target.value)
     setSelectedFont(e.target.value)
     localStorage.setItem('font', e.target.value);
   }
 
-  // useEffect(() => {
-  //   setResults(mockData)
-  // }, [])
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log('search for word: ', searchValue)
-    // setSearchValue(e.target.value)
-
-    // fetch(`${baseUrl}/${searchValue}`)
-    //   .then(response => {
-    //     console.log('res: ', response)
-    //     //response.json()
-    //     setData(response.data)
-    //   })
-    //   // .then(data => setData(data))
-    //   .catch(err => console.error(err));
     lookup();
   }
 
@@ -115,13 +78,6 @@ function App() {
   useEffect(() => {
     lookup();
   }, []);
-
-  // useEffect(() => {
-  //   fetch(`${baseUrl}/${searchValue}`)
-  //     .then(response => response.json)
-  //     .then(data => setData(data))
-  //     .catch(err => console.error(err));
-  // })
 
   console.log('data: ', data)
 
