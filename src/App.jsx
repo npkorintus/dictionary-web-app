@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import './App.css';
 
@@ -26,8 +26,7 @@ const font = localStorage.getItem('font');
 function App() {
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const [searchValue, setSearchValue] = useState('');
-  const [data, setData] = useState([]);
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [error, setError] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -43,43 +42,30 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    lookup();
-  }
 
-  async function lookup () {
-    try {
-      const response = await fetch(`${baseUrl}/${searchValue}`);
-      console.log('response: ', response)
-      if (response.ok) {
+    async function fetchData() {
+      try {
+        const response = await fetch(`${baseUrl}/${query}`);
+        if (!response.ok) {
+          const error = await response.json();
+          setIsOpen(true);
+          setError(error);
+          throw new Error("Network response was not OK");
+        }
         const data = await response.json();
-        setData(data);
         setResults(data);
-        setError();
 
         // find url for audio
         data.forEach(result => {
           const sample = result.phonetics.find(({ audio }) => audio !== "");
           setAudio(new Audio(sample.audio))
         })
-
-      } else if (response.ok === false) {
-        const err = await response.json();
-        setIsOpen(true);
-        setError(err);
-        // setResults([]);
-        console.log('error! ', err)
+      } catch (error) {
+        console.error("There has been a problem with your fetch operation:", error);
       }
-    } catch (error) {
-      // setError(error)
-      console.error(error)
     }
+    fetchData();
   }
-
-  useEffect(() => {
-    lookup();
-  }, []);
-
-  console.log('data: ', data)
 
   return (
     <div className={selectedFont}>
@@ -117,8 +103,8 @@ function App() {
             <InputGroup>
               <Input
                 placeholder='Search dictionary...'
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
                 required
                 />
               <InputRightElement>
