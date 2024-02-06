@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     open: true,
     port: 3000
-  }
+  },
+  base: '/dictionary-web-app/'
 })
