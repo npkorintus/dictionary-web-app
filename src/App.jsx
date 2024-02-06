@@ -78,17 +78,17 @@ function App() {
           <Box>
             <Flex align='center'>
               <Box>
-              <Select onChange={handleSelect} defaultValue={selectedFont}>
-                <option value='serif'>Serif</option>
-                <option value='sans-serif'>Sans Serif</option>
-                <option value='monospace'>Monospace</option>
-              </Select>
+                <Select onChange={handleSelect} defaultValue={selectedFont}>
+                  <option value='serif'>Serif</option>
+                  <option value='sans-serif'>Sans Serif</option>
+                  <option value='monospace'>Monospace</option>
+                </Select>
               </Box>
               <Spacer />
               <Box p={2}>
                 <Switch onChange={toggleColorMode} isChecked={colorMode === 'dark' ? true : false} />
               </Box>
-                <Spacer />
+              <Spacer />
               <Box>
                 <MoonIcon />
               </Box>
@@ -106,7 +106,7 @@ function App() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 required
-                />
+              />
               <InputRightElement>
                 <IconButton type="submit" aria-label='search' icon={<SearchIcon />} />
               </InputRightElement>
@@ -132,29 +132,29 @@ function App() {
             const partOfSpeech = meaning.partOfSpeech;
 
             return (
-            <div key={partOfSpeech} style={{ padding: '16px 0', margin: '16px 0' }}>
-              <Flex align='center' style={{ marginBottom: '16px' }}>
-                <div style={{ fontStyle: 'italic', fontWeight: 'bold', marginRight: '16px' }}>
-                  {meaning.partOfSpeech}
-                </div>
-                <hr style={{ width: '100%' }} />
-              </Flex>
-              <div style={{ fontWeight: 'lighter', color: 'gray' }}>Meaning</div>
-              <ul key={`${partOfSpeech}-${index}-list`} style={{ margin: '8px 24px 32px' }}>
-                {meaning.definitions.map((definition, index) => (
-                  <React.Fragment key={`${partOfSpeech}-${index}-item`}>
-                    <li key={`${partOfSpeech}-${index}-item`} style={{ margin: '8px 0' }}>{definition.definition}</li>
-                    {definition.example && <div style={{ color: 'gray' }}>"{definition.example}"</div>}
-                  </React.Fragment>
-                ))}
-              </ul>
-              {meaning.synonyms?.length > 0 ? (
-                <div>
-                  <span>Synonyms: </span>
-                  <span style={{ color: 'purple', fontWeight: 'bold' }}>{meaning.synonyms.join(', ')}</span>
-                </div>
-              ) : null}
-            </div>)
+              <div key={partOfSpeech} style={{ padding: '16px 0', margin: '16px 0' }}>
+                <Flex align='center' style={{ marginBottom: '16px' }}>
+                  <div style={{ fontStyle: 'italic', fontWeight: 'bold', marginRight: '16px' }}>
+                    {meaning.partOfSpeech}
+                  </div>
+                  <hr style={{ width: '100%' }} />
+                </Flex>
+                <div style={{ fontWeight: 'lighter', color: 'gray' }}>Meaning</div>
+                <ul key={`${partOfSpeech}-${index}-list`} style={{ margin: '8px 24px 32px' }}>
+                  {meaning.definitions.map((definition, index) => (
+                    <React.Fragment key={`${partOfSpeech}-${index}-item`}>
+                      <li key={`${partOfSpeech}-${index}-item`} style={{ margin: '8px 0' }}>{definition.definition}</li>
+                      {definition.example && <div style={{ color: 'gray' }}>"{definition.example}"</div>}
+                    </React.Fragment>
+                  ))}
+                </ul>
+                {meaning.synonyms?.length > 0 ? (
+                  <div>
+                    <span>Synonyms: </span>
+                    <span style={{ color: 'purple', fontWeight: 'bold' }}>{meaning.synonyms.join(', ')}</span>
+                  </div>
+                ) : null}
+              </div>)
           })}
           <hr />
           <div style={{ fontSize: '12px', paddingTop: '16px' }}>
