@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import './App.css';
 
+import Welcome from './components/Welcome';
+
 import { Box, Flex, Icon, IconButton, Spacer } from '@chakra-ui/react';
 import { Button, FormControl, Input, InputGroup, InputRightElement, Select, Switch } from '@chakra-ui/react';
 import {
@@ -13,6 +15,8 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
+
+import { Link } from '@chakra-ui/react'
 
 import { useColorMode } from '@chakra-ui/react';
 
@@ -72,7 +76,9 @@ function App() {
       <div className='toolbar'>
         <Flex align='center'>
           <Box>
-            <Icon as={RiBook2Line} boxSize={8} />
+            <Link href='/' aria-label='Home' title='Home'>
+              <Icon as={RiBook2Line} boxSize={8} />
+            </Link>
           </Box>
           <Spacer />
           <Box>
@@ -115,7 +121,7 @@ function App() {
         </form>
       </div>
 
-      {results.length > 0 && results.map((result, index) => (
+      {results.length > 0 ? results.map((result, index) => (
         <div className='result-word' key={`${result.word}-${index}`} style={{ marginBottom: '48px' }}>
           <Flex>
             <Box>
@@ -166,7 +172,7 @@ function App() {
             </a>
           </div>
         </div>
-      ))}
+      )) : <Welcome />}
       {results.length > 1 ? <hr /> : null}
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
