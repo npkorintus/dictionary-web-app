@@ -76,7 +76,7 @@ function App() {
       <div className='toolbar'>
         <Flex align='center'>
           <Box>
-            <Link href='/' aria-label='Home' title='Home'>
+            <Link href='/dictionary-web-app/' aria-label='Home' title='Home'>
               <Icon as={RiBook2Line} boxSize={8} />
             </Link>
           </Box>
