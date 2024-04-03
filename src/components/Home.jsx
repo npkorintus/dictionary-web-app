@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Welcome() {
+function Home() {
     return (
         <div style={{ transform: 'translateY(50%)' }}>
             <h1 style={{ marginBottom: '16px' }}>Welcome!</h1>
@@ -9,4 +9,4 @@ function Welcome() {
     )
 }
 
-export default Welcome;
+export default Home;
