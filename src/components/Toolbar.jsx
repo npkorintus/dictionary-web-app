@@ -8,7 +8,7 @@ import { RiBook2Line } from "react-icons/ri";
 import { useColorMode } from '@chakra-ui/react';
 
 function Toolbar(props) {
-  const { font, selectedFont, setSelectedFont } = props;
+  const { selectedFont, setSelectedFont } = props;
   const { colorMode, toggleColorMode } = useColorMode();
 
   const handleSelect = (e) => {
@@ -16,8 +16,6 @@ function Toolbar(props) {
     setSelectedFont(e.target.value)
     localStorage.setItem('font', e.target.value);
   }
-
-  console.log('font: ', font)
 
   return (
     <div className='toolbar'>
