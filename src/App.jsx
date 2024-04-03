@@ -2,25 +2,15 @@ import React, { useState } from 'react';
 
 import './App.css';
 
+import Error from './components/Error';
 import Home from './components/Home';
 import Search from './components/Search';
 import Toolbar from './components/Toolbar';
 
 import { Box, Flex, Icon, Spacer } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/react';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react';
 
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { FaPlayCircle } from "react-icons/fa";
-
 
 const font = localStorage.getItem('font');
 
@@ -93,24 +83,8 @@ function App() {
       )) : <Home />}
       {results.length > 1 ? <hr /> : null}
 
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{error?.title}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <div>{error?.message}</div>
-            <br />
-            <div>{error?.resolution}</div>
-          </ModalBody>
+      <Error error={error} isOpen={isOpen} setIsOpen={setIsOpen} />
 
-          <ModalFooter>
-            <Button colorScheme='purple' mr={3} onClick={() => setIsOpen(false)}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
 
     </div>
   )
