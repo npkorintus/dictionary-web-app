@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Error from './components/Error';
 import Home from './components/Home';
+import Results from './components/Results';
 import Search from './components/Search';
 import Toolbar from './components/Toolbar';
 import Word from './components/Word';
@@ -21,10 +22,7 @@ function App() {
     <div className={selectedFont}>
       <Toolbar font={font} selectedFont={selectedFont} setSelectedFont={setSelectedFont} />
       <Search setResults={setResults} setAudio={setAudio} setError={setError} setIsOpen={setIsOpen} />
-      {results.length > 0 ? results.map((result, index) => (
-        <Word result={result} index={index} audio={audio} key={`${result.word}-${index}`} />
-      )) : <Home />}
-      {results.length > 1 ? <hr /> : null}
+      <Results results={results} audio={audio} />
       <Error error={error} isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   )
