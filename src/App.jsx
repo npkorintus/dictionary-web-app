@@ -16,13 +16,14 @@ function App() {
   const [results, setResults] = useState([]);
   const [error, setError] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [audio, setAudio] = useState(new Audio(''));
+  const [audioUrl, setAudioUrl] = useState('');
+  const [audio, setAudio] = useState(new Audio(audioUrl));
 
   return (
     <div className={selectedFont}>
       <Toolbar font={font} selectedFont={selectedFont} setSelectedFont={setSelectedFont} />
-      <Search setResults={setResults} setAudio={setAudio} setError={setError} setIsOpen={setIsOpen} />
-      <Results results={results} audio={audio} />
+      <Search setResults={setResults} setAudioUrl={setAudioUrl} setAudio={setAudio} setError={setError} setIsOpen={setIsOpen} />
+      <Results results={results} audio={audio} audioUrl={audioUrl} />
       <Error error={error} isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   )

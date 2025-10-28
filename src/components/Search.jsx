@@ -7,7 +7,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 const baseUrl = `https://api.dictionaryapi.dev/api/v2/entries/en`;
 
 function Search(props) {
-  const { setResults, setAudio, setError, setIsOpen } = props;
+  const { setResults, setAudioUrl, setAudio, setError, setIsOpen } = props;
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e) => {
@@ -28,7 +28,14 @@ function Search(props) {
         // find url for audio
         data.forEach(result => {
           const sample = result.phonetics.find(({ audio }) => audio !== "");
-          setAudio(new Audio(sample.audio))
+
+          if (sample) {
+            setAudioUrl(sample.audio);
+            setAudio(new Audio(sample.audio))
+          } else {
+            setAudioUrl('');
+            setAudio('');
+          }
         })
       } catch (error) {
         console.error("There has been a problem with your fetch operation:", error);

@@ -6,7 +6,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { FaPlayCircle } from "react-icons/fa";
 
 function Word(props) {
-  const { result, index, audio } = props;
+  const { result, index, audio, audioUrl } = props;
 
   return (
     <div className='result-word' key={`${result.word}-${index}`} style={{ marginBottom: '48px' }}>
@@ -17,7 +17,7 @@ function Word(props) {
         </Box>
         <Spacer />
         <Box>
-          {audio && <button onClick={() => audio.play()}><Icon style={{ color: 'purple' }} as={FaPlayCircle} boxSize={12} /></button>}
+          {audioUrl && <button onClick={() => audio.play()}><Icon style={{ color: 'purple' }} as={FaPlayCircle} boxSize={12} /></button>}
         </Box>
       </Flex>
 
